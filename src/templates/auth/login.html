@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block contenido %}
+<div class="row justify-content-center mt-4">
+    <div class="col-11 col-sm-8 col-md-6 col-lg-4">
+        <div class="login-card">
+            <div class="card-body">
+                <div class="login-icon">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="text-center mb-4">
+                    <h3 class="login-title">FacturAPP</h3>
+                    <p class="login-subtitle">Inicia sesión para continuar</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('login') }}" autocomplete="off" class="form-custom">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Ingresa tu usuario" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Ingresa tu contraseña" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom btn-custom btn-block"
+                            style="padding: 0.6rem; font-size: 0.95rem;">
+                        <i class="fas fa-sign-in-alt"></i> Ingresar
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">
+                        Usuario: <strong>admin</strong> | Contraseña: <strong>admin123</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

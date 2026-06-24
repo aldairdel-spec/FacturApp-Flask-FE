@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block contenido %}
+
+<div class="welcome-banner">
+    <h3><i class="fas fa-hand-peace"></i> Bienvenido, {{ nombre_usuario }}</h3>
+    <p>Gestiona tus clientes, productos, vendedores y facturas desde un solo lugar.</p>
+</div>
+
+<div class="row">
+    <div class="col-6 col-md-3 mb-3">
+        <div class="dashboard-card">
+            <a href="{{ url_for('clientes_list') }}">
+                <div class="icon clientes"><i class="fas fa-users"></i></div>
+                <h5>Clientes</h5>
+                <div class="count">{{ clientes|length }}</div>
+                <small class="text-muted">Registrados</small>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-3">
+        <div class="dashboard-card">
+            <a href="{{ url_for('productos_list') }}">
+                <div class="icon productos"><i class="fas fa-box"></i></div>
+                <h5>Productos</h5>
+                <div class="count">{{ productos|length }}</div>
+                <small class="text-muted">Registrados</small>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-3">
+        <div class="dashboard-card">
+            <a href="{{ url_for('vendedores_list') }}">
+                <div class="icon vendedores"><i class="fas fa-handshake"></i></div>
+                <h5>Vendedores</h5>
+                <div class="count">{{ vendedores|length }}</div>
+                <small class="text-muted">Registrados</small>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-3">
+        <div class="dashboard-card">
+            <a href="{{ url_for('facturas_list') }}">
+                <div class="icon facturas"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h5>Facturas</h5>
+                <div class="count">{{ facturas|length }}</div>
+                <small class="text-muted">Emitidas</small>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

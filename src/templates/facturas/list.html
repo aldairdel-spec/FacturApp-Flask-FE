@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+<div class="page-header">
+    <h2><i class="fas fa-file-invoice-dollar"></i> Facturas</h2>
+    <a href="{{ url_for('facturas_create') }}" class="btn btn-primary-custom btn-custom">
+        <i class="fas fa-plus-circle"></i> Nueva Factura
+    </a>
+</div>
+
+<div class="card-custom">
+    <div class="card-body">
+        <div class="table-responsive-custom">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        <th>Total</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in facturas %}
+                    <tr>
+                        <td>{{ f.id }}</td>
+                        <td><strong>{{ f.cliente }}</strong></td>
+                        <td>{{ f.vendedor }}</td>
+                        <td><span class="badge-total">S/ {{ f.total }}</span></td>
+                        <td class="text-center">
+                            <div class="action-btns justify-content-center">
+                                <a href="{{ url_for('facturas_edit', id=f.id) }}"
+                                   class="btn btn-warning-custom btn-custom btn-custom-sm">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a href="{{ url_for('facturas_delete', id=f.id) }}"
+                                   class="btn btn-danger-custom btn-custom btn-custom-sm"
+                                   onclick="return confirm('¿Eliminar factura #{{ f.id }}?')">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="fas fa-inbox"></i> No hay facturas registradas
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

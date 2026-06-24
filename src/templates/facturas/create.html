@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+<div class="page-header">
+    <h2><i class="fas fa-file-invoice"></i> Nueva Factura</h2>
+</div>
+
+<div class="card-custom">
+    <div class="card-body">
+        <form method="POST" class="form-custom">
+            <div class="form-group">
+                <label><i class="fas fa-users"></i> Cliente</label>
+                <select class="form-control" name="cliente" required>
+                    <option value="">Seleccione un cliente</option>
+                    {% for c in clientes %}
+                    <option value="{{ c.nombre }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-handshake"></i> Vendedor</label>
+                <select class="form-control" name="vendedor" required>
+                    <option value="">Seleccione un vendedor</option>
+                    {% for v in vendedores %}
+                    <option value="{{ v.nombre }}">{{ v.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-box"></i> Producto</label>
+                <select class="form-control" name="total" id="productoSelect" required>
+                    <option value="">Seleccione un producto</option>
+                    {% for p in productos %}
+                    <option value="{{ p.precio }}">{{ p.nombre }} — S/ {{ p.precio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-dollar-sign"></i> Total</label>
+                <input type="text" class="form-control" id="totalDisplay" value="S/ 0.00" readonly>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success-custom btn-custom">
+                    <i class="fas fa-save"></i> Crear Factura
+                </button>
+                <a href="{{ url_for('facturas_list') }}" class="btn btn-secondary-custom btn-custom">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('productoSelect').addEventListener('change', function() {
+    var total = this.value;
+    document.getElementById('totalDisplay').value = 'S/ ' + (parseFloat(total) || 0).toFixed(2);
+});
+</script>
+
+{% endblock %}

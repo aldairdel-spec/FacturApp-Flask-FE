@@ -559,11 +559,26 @@
                     <i class="fas fa-users"></i> Clientes
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url_for('clientes_list') }}">
+                    <a class="dropdown-item" href="{{ url_for('clientes.clientes_list') }}">
                         <i class="fas fa-list"></i> Ver Clientes
                     </a>
-                    <a class="dropdown-item" href="{{ url_for('clientes_create') }}">
+                    <a class="dropdown-item" href="{{ url_for('clientes.clientes_create') }}">
                         <i class="fas fa-plus-circle"></i> Nuevo Cliente
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   id="categoriasDropdown" role="button" data-toggle="dropdown">
+                    <i class="fas fa-tags"></i> Categorías
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ url_for('categorias.categorias_list') }}">
+                        <i class="fas fa-list"></i> Ver Categorías
+                    </a>
+                    <a class="dropdown-item" href="{{ url_for('categorias.categorias_create') }}">
+                        <i class="fas fa-plus-circle"></i> Nueva Categoría
                     </a>
                 </div>
             </li>
@@ -574,10 +589,10 @@
                     <i class="fas fa-box"></i> Productos
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url_for('productos_list') }}">
+                    <a class="dropdown-item" href="{{ url_for('productos.productos_list') }}">
                         <i class="fas fa-list"></i> Ver Productos
                     </a>
-                    <a class="dropdown-item" href="{{ url_for('productos_create') }}">
+                    <a class="dropdown-item" href="{{ url_for('productos.productos_create') }}">
                         <i class="fas fa-plus-circle"></i> Nuevo Producto
                     </a>
                 </div>
@@ -589,10 +604,10 @@
                     <i class="fas fa-handshake"></i> Vendedores
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url_for('vendedores_list') }}">
+                    <a class="dropdown-item" href="{{ url_for('vendedores.vendedores_list') }}">
                         <i class="fas fa-list"></i> Ver Vendedores
                     </a>
-                    <a class="dropdown-item" href="{{ url_for('vendedores_create') }}">
+                    <a class="dropdown-item" href="{{ url_for('vendedores.vendedores_create') }}">
                         <i class="fas fa-plus-circle"></i> Nuevo Vendedor
                     </a>
                 </div>
@@ -604,11 +619,33 @@
                     <i class="fas fa-file-invoice-dollar"></i> Facturas
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url_for('facturas_list') }}">
+                    <a class="dropdown-item" href="{{ url_for('facturas.facturas_list') }}">
                         <i class="fas fa-list"></i> Ver Facturas
                     </a>
-                    <a class="dropdown-item" href="{{ url_for('facturas_create') }}">
+                    <a class="dropdown-item" href="{{ url_for('facturas.facturas_create') }}">
                         <i class="fas fa-plus-circle"></i> Nueva Factura
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('detalle_factura.detalle_factura_list') }}">
+                        <i class="fas fa-list-alt"></i> Detalle de Facturas
+                    </a>
+                    <a class="dropdown-item" href="{{ url_for('detalle_factura.detalle_factura_create') }}">
+                        <i class="fas fa-plus-circle"></i> Nuevo Detalle
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   id="metodosPagoDropdown" role="button" data-toggle="dropdown">
+                    <i class="fas fa-credit-card"></i> Metodos de Pago
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ url_for('metodos_pago.metodos_pago_list') }}">
+                        <i class="fas fa-list"></i> Ver Metodos
+                    </a>
+                    <a class="dropdown-item" href="{{ url_for('metodos_pago.metodos_pago_create') }}">
+                        <i class="fas fa-plus-circle"></i> Nuevo Metodo
                     </a>
                 </div>
             </li>

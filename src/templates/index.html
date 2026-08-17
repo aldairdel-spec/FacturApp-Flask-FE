@@ -10,10 +10,10 @@
 <div class="row">
     <div class="col-6 col-md-3 mb-3">
         <div class="dashboard-card">
-            <a href="{{ url_for('clientes_list') }}">
+            <a href="{{ url_for('clientes.clientes_list') }}">
                 <div class="icon clientes"><i class="fas fa-users"></i></div>
                 <h5>Clientes</h5>
-                <div class="count">{{ clientes|length }}</div>
+                <div class="count">{{ total_clientes }}</div>
                 <small class="text-muted">Registrados</small>
             </a>
         </div>
@@ -21,10 +21,10 @@
 
     <div class="col-6 col-md-3 mb-3">
         <div class="dashboard-card">
-            <a href="{{ url_for('productos_list') }}">
+            <a href="{{ url_for('productos.productos_list') }}">
                 <div class="icon productos"><i class="fas fa-box"></i></div>
                 <h5>Productos</h5>
-                <div class="count">{{ productos|length }}</div>
+                <div class="count">{{ total_productos }}</div>
                 <small class="text-muted">Registrados</small>
             </a>
         </div>
@@ -32,10 +32,10 @@
 
     <div class="col-6 col-md-3 mb-3">
         <div class="dashboard-card">
-            <a href="{{ url_for('vendedores_list') }}">
+            <a href="{{ url_for('vendedores.vendedores_list') }}">
                 <div class="icon vendedores"><i class="fas fa-handshake"></i></div>
                 <h5>Vendedores</h5>
-                <div class="count">{{ vendedores|length }}</div>
+                <div class="count">{{ total_vendedores }}</div>
                 <small class="text-muted">Registrados</small>
             </a>
         </div>
@@ -43,10 +43,10 @@
 
     <div class="col-6 col-md-3 mb-3">
         <div class="dashboard-card">
-            <a href="{{ url_for('facturas_list') }}">
+            <a href="{{ url_for('facturas.facturas_list') }}">
                 <div class="icon facturas"><i class="fas fa-file-invoice-dollar"></i></div>
                 <h5>Facturas</h5>
-                <div class="count">{{ facturas|length }}</div>
+                <div class="count">{{ total_facturas }}</div>
                 <small class="text-muted">Emitidas</small>
             </a>
         </div>

@@ -9,45 +9,54 @@
     <div class="card-body">
         <form method="POST" class="form-custom">
             <div class="form-group">
+                <label><i class="fas fa-hashtag"></i> Numero de Factura</label>
+                <input type="text" class="form-control" name="numero_factura" required
+                       placeholder="Ej: FAC-001">
+            </div>
+
+            <div class="form-group">
                 <label><i class="fas fa-users"></i> Cliente</label>
-                <select class="form-control" name="cliente" required>
+                <select class="form-control" name="cliente_id" required>
                     <option value="">Seleccione un cliente</option>
                     {% for c in clientes %}
-                    <option value="{{ c.nombre }}">{{ c.nombre }}</option>
+                    <option value="{{ c.id }}">{{ c.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label><i class="fas fa-handshake"></i> Vendedor</label>
-                <select class="form-control" name="vendedor" required>
+                <select class="form-control" name="vendedor_id" required>
                     <option value="">Seleccione un vendedor</option>
                     {% for v in vendedores %}
-                    <option value="{{ v.nombre }}">{{ v.nombre }}</option>
+                    <option value="{{ v.id }}">{{ v.nombre }} {{ v.apellido }}</option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
-                <label><i class="fas fa-box"></i> Producto</label>
-                <select class="form-control" name="total" id="productoSelect" required>
-                    <option value="">Seleccione un producto</option>
-                    {% for p in productos %}
-                    <option value="{{ p.precio }}">{{ p.nombre }} — S/ {{ p.precio }}</option>
-                    {% endfor %}
-                </select>
+                <label><i class="fas fa-dollar-sign"></i> Subtotal</label>
+                <input type="number" step="0.01" min="0" class="form-control" name="subtotal"
+                       id="subtotalInput" value="0.00" required>
             </div>
 
             <div class="form-group">
-                <label><i class="fas fa-dollar-sign"></i> Total</label>
-                <input type="text" class="form-control" id="totalDisplay" value="S/ 0.00" readonly>
+                <label><i class="fas fa-percent"></i> IVA (19%)</label>
+                <input type="number" step="0.01" min="0" class="form-control" name="iva"
+                       id="ivaInput" value="0.00" readonly>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-calculator"></i> Total</label>
+                <input type="number" step="0.01" min="0" class="form-control" name="total"
+                       id="totalInput" value="0.00" readonly>
             </div>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-success-custom btn-custom">
                     <i class="fas fa-save"></i> Crear Factura
                 </button>
-                <a href="{{ url_for('facturas_list') }}" class="btn btn-secondary-custom btn-custom">
+                <a href="{{ url_for('facturas.facturas_list') }}" class="btn btn-secondary-custom btn-custom">
                     <i class="fas fa-times"></i> Cancelar
                 </a>
             </div>
@@ -56,9 +65,12 @@
 </div>
 
 <script>
-document.getElementById('productoSelect').addEventListener('change', function() {
-    var total = this.value;
-    document.getElementById('totalDisplay').value = 'S/ ' + (parseFloat(total) || 0).toFixed(2);
+document.getElementById('subtotalInput').addEventListener('input', function() {
+    var subtotal = parseFloat(this.value) || 0;
+    var iva = subtotal * 0.19;
+    var total = subtotal + iva;
+    document.getElementById('ivaInput').value = iva.toFixed(2);
+    document.getElementById('totalInput').value = total.toFixed(2);
 });
 </script>
 

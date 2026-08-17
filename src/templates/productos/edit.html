@@ -10,18 +10,53 @@
     <div class="card-body">
         <form method="POST" class="form-custom">
             <div class="form-group">
+                <label><i class="fas fa-barcode"></i> Código</label>
+                <input type="text" class="form-control" name="codigo" value="{{ producto.codigo }}" required>
+            </div>
+            <div class="form-group">
                 <label><i class="fas fa-tag"></i> Nombre</label>
                 <input type="text" class="form-control" name="nombre" value="{{ producto.nombre }}" required>
             </div>
             <div class="form-group">
+                <label><i class="fas fa-align-left"></i> Descripción</label>
+                <input type="text" class="form-control" name="descripcion" value="{{ producto.descripcion }}" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-ruler"></i> Unidad de Medida</label>
+                <select class="form-control" name="unidad_medida" required>
+                    <option value="">Seleccione una unidad</option>
+                    <option value="UN" {% if producto.unidad_medida == "UN" %}selected{% endif %}>UN - Unidad</option>
+                    <option value="KG" {% if producto.unidad_medida == "KG" %}selected{% endif %}>KG - Kilogramo</option>
+                    <option value="LT" {% if producto.unidad_medida == "LT" %}selected{% endif %}>LT - Litro</option>
+                    <option value="MT" {% if producto.unidad_medida == "MT" %}selected{% endif %}>MT - Metro</option>
+                    <option value="MT2" {% if producto.unidad_medida == "MT2" %}selected{% endif %}>MT2 - Metro Cuadrado</option>
+                    <option value="MT3" {% if producto.unidad_medida == "MT3" %}selected{% endif %}>MT3 - Metro Cúbico</option>
+                    <option value="PR" {% if producto.unidad_medida == "PR" %}selected{% endif %}>PR - Par</option>
+                    <option value="CJ" {% if producto.unidad_medida == "CJ" %}selected{% endif %}>CJ - Caja</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label><i class="fas fa-dollar-sign"></i> Precio</label>
-                <input type="number" class="form-control" name="precio" value="{{ producto.precio }}" step="0.01" min="0" required>
+                <input type="number" class="form-control" name="precio" value="{{ producto.precio }}" step="0.01" min="0.01" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-cubes"></i> Stock</label>
+                <input type="number" class="form-control" name="stock" value="{{ producto.stock }}" min="0" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-folder"></i> Categoría</label>
+                <select class="form-control" name="id_categoria" required>
+                    <option value="">Seleccione una categoría</option>
+                    {% for c in categorias %}
+                    <option value="{{ c.id }}" {% if producto.id_categoria == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-success-custom btn-custom">
                     <i class="fas fa-save"></i> Actualizar
                 </button>
-                <a href="{{ url_for('productos_list') }}" class="btn btn-secondary-custom btn-custom">
+                <a href="{{ url_for('productos.productos_list') }}" class="btn btn-secondary-custom btn-custom">
                     <i class="fas fa-times"></i> Cancelar
                 </a>
             </div>

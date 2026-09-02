@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis.metodo_pago_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.metodo_pago_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
 
 metodos_pago_bp = Blueprint('metodos_pago', __name__)
 
@@ -81,3 +81,4 @@ def metodos_pago_delete(id):
         flash(resultado["datos"].get("message", "Error al eliminar el metodo de pago"), "error")
 
     return redirect(url_for("metodos_pago.metodos_pago_list"))
+

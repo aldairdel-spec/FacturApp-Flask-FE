@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis.categoria_api import obtener_todas, obtener_por_id, crear, actualizar, eliminar
+from src.apis.categoria_api import obtener_todas, obtener_por_id, crear, actualizar, eliminar
 
 categorias_bp = Blueprint('categorias', __name__)
 
@@ -81,3 +81,4 @@ def categorias_delete(id):
         flash(resultado["datos"].get("message", "Error al eliminar la categoría"), "error")
 
     return redirect(url_for("categorias.categorias_list"))
+

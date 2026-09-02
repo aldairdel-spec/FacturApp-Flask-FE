@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis.detalle_factura_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
-from apis import factura_api
-from apis import producto_api
+from src.apis.detalle_factura_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis import factura_api
+from src.apis import producto_api
 
 detalle_factura_bp = Blueprint('detalle_factura', __name__)
 
@@ -199,3 +199,4 @@ def detalle_factura_delete(id):
         flash(resultado["datos"].get("message", "Error al eliminar el detalle"), "error")
 
     return redirect(url_for("detalle_factura.detalle_factura_list"))
+

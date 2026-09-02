@@ -1,5 +1,5 @@
 import requests
-from apis import BACKEND_URL
+from src.apis import BACKEND_URL
 
 
 def obtener_todas():
@@ -125,3 +125,4 @@ def eliminar(id):
             "status": 500,
             "datos": {"message": f"Error inesperado: {str(e)}"}
         }
+

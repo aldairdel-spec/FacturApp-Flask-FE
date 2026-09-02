@@ -1,5 +1,5 @@
 import requests
-from apis import BACKEND_URL
+from src.apis import BACKEND_URL
 
 
 def obtener_todas():
@@ -29,3 +29,4 @@ def actualizar(id, data):
 def eliminar(id):
     response = requests.delete(f"{BACKEND_URL}/facturas/{id}")
     return response.status_code, response.json()
+

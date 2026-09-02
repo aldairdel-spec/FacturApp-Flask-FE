@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis.cliente_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.cliente_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
 
 clientes_bp = Blueprint('clientes', __name__)
 
@@ -132,3 +132,4 @@ def clientes_delete(id):
         flash(resultado["datos"].get("message", "Error al eliminar el cliente"), "error")
 
     return redirect(url_for("clientes.clientes_list"))
+

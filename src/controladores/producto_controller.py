@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis.producto_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
-from apis.categoria_api import obtener_todas
+from src.apis.producto_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.categoria_api import obtener_todas
 
 productos_bp = Blueprint('productos', __name__)
 
@@ -222,3 +222,4 @@ def productos_delete(id):
         flash(resultado["datos"].get("message", "Error al eliminar el producto"), "error")
 
     return redirect(url_for("productos.productos_list"))
+

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from apis import factura_api, cliente_api, usuario_api
+from src.apis import factura_api, cliente_api, usuario_api
 
 facturas_bp = Blueprint('facturas', __name__)
 
@@ -207,3 +207,4 @@ def facturas_delete(id):
         msg = response.get("message", "Error al eliminar la factura")
         flash(msg, "error")
     return redirect(url_for("facturas.facturas_list"))
+

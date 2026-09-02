@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from controladores import registrar_controladores
-from apis import cliente_api, producto_api, usuario_api, factura_api
+from src.controladores import registrar_controladores
+from src.apis import cliente_api, producto_api, usuario_api, factura_api
 
 app = Flask(__name__)
 app.secret_key = 'facturapp_secret_key_2024'
@@ -91,3 +91,4 @@ registrar_controladores(app)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
+

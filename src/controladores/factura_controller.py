@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from src.apis import factura_api, cliente_api, usuario_api
+from src.apis import cerrar_sesion_por_401
 
 facturas_bp = Blueprint('facturas', __name__)
 
@@ -20,7 +21,23 @@ def _obtener_vendedores():
 
 @facturas_bp.route('/facturas')
 def facturas_list():
-    facturas = factura_api.obtener_todas()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = factura_api.obtener_paginadas(page=page, per_page=per_page)
+
+    if resultado["status"] == 401:
+        return cerrar_sesion_por_401()
+
+    if resultado["status"] != 200:
+        message = "Error al obtener facturas"
+        datos = resultado.get("datos")
+        if isinstance(datos, dict):
+            message = datos.get("message", message)
+        flash(message, "error")
+        return render_template("facturas/list.html", facturas=[], page=1, per_page=per_page,
+                               total=0, total_pages=0, endpoint="facturas.facturas_list")
+
+    facturas = resultado["datos"]
 
     clientes = _obtener_clientes()
     clientes_map = {c["id"]: c["nombre"] for c in clientes}
@@ -32,7 +49,12 @@ def facturas_list():
         f["cliente_nombre"] = clientes_map.get(f["cliente_id"], "N/A")
         f["vendedor_nombre"] = vendedores_map.get(f["vendedor_id"], "N/A")
 
-    return render_template("facturas/list.html", facturas=facturas)
+    return render_template("facturas/list.html", facturas=facturas,
+                           page=resultado.get("page", page),
+                           per_page=resultado.get("per_page", per_page),
+                           total=resultado.get("total", 0),
+                           total_pages=resultado.get("total_pages", 0),
+                           endpoint="facturas.facturas_list")
 
 
 @facturas_bp.route('/facturas/nuevo', methods=['GET', 'POST'])

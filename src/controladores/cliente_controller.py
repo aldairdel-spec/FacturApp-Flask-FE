@@ -1,18 +1,31 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.apis.cliente_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.cliente_api import obtener_todos, obtener_paginado, obtener_por_id, crear, actualizar, eliminar
+from src.apis import cerrar_sesion_por_401
 
 clientes_bp = Blueprint('clientes', __name__)
 
 
 @clientes_bp.route("/clientes")
 def clientes_list():
-    resultado = obtener_todos()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = obtener_paginado(page=page, per_page=per_page)
 
     if resultado["status"] == 200:
-        return render_template("clientes/list.html", clientes=resultado["datos"])
+        return render_template("clientes/list.html",
+                               clientes=resultado["datos"],
+                               page=resultado.get("page", page),
+                               per_page=resultado.get("per_page", per_page),
+                               total=resultado.get("total", 0),
+                               total_pages=resultado.get("total_pages", 0),
+                               endpoint="clientes.clientes_list")
+
+    if resultado["status"] == 401:
+        return cerrar_sesion_por_401()
 
     flash(resultado["datos"].get("message", "Error al obtener clientes"), "error")
-    return render_template("clientes/list.html", clientes=[])
+    return render_template("clientes/list.html", clientes=[], page=1, per_page=per_page,
+                           total=0, total_pages=0, endpoint="clientes.clientes_list")
 
 
 @clientes_bp.route("/clientes/nuevo", methods=["GET", "POST"])

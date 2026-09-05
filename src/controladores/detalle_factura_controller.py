@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.apis.detalle_factura_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.detalle_factura_api import obtener_todos, obtener_paginado, obtener_por_id, crear, actualizar, eliminar
 from src.apis import factura_api
 from src.apis import producto_api
+from src.apis import cerrar_sesion_por_401
 
 detalle_factura_bp = Blueprint('detalle_factura', __name__)
 
@@ -19,11 +20,16 @@ def _obtener_productos():
 
 @detalle_factura_bp.route('/detalle_factura')
 def detalle_factura_list():
-    resultado = obtener_todos()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = obtener_paginado(page=page, per_page=per_page)
 
     if resultado["status"] != 200:
+        if resultado["status"] == 401:
+            return cerrar_sesion_por_401()
         flash(resultado["datos"].get("message", "Error al obtener detalles"), "error")
-        return render_template("detalle_factura/list.html", detalles=[])
+        return render_template("detalle_factura/list.html", detalles=[], page=1, per_page=per_page,
+                               total=0, total_pages=0, endpoint="detalle_factura.detalle_factura_list")
 
     detalles = resultado["datos"]
 
@@ -37,7 +43,12 @@ def detalle_factura_list():
         d["factura_numero"] = facturas_map.get(d["factura_id"], "N/A")
         d["producto_nombre"] = productos_map.get(d["producto_id"], "N/A")
 
-    return render_template("detalle_factura/list.html", detalles=detalles)
+    return render_template("detalle_factura/list.html", detalles=detalles,
+                           page=resultado.get("page", page),
+                           per_page=resultado.get("per_page", per_page),
+                           total=resultado.get("total", 0),
+                           total_pages=resultado.get("total_pages", 0),
+                           endpoint="detalle_factura.detalle_factura_list")
 
 
 @detalle_factura_bp.route('/detalle_factura/nuevo', methods=['GET', 'POST'])

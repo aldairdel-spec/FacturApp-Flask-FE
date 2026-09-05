@@ -1,18 +1,31 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.apis.categoria_api import obtener_todas, obtener_por_id, crear, actualizar, eliminar
+from src.apis.categoria_api import obtener_todas, obtener_paginado, obtener_por_id, crear, actualizar, eliminar
+from src.apis import cerrar_sesion_por_401
 
 categorias_bp = Blueprint('categorias', __name__)
 
 
 @categorias_bp.route("/categorias/")
 def categorias_list():
-    resultado = obtener_todas()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = obtener_paginado(page=page, per_page=per_page)
 
     if resultado["status"] == 200:
-        return render_template("categorias/list.html", categorias=resultado["datos"])
+        return render_template("categorias/list.html",
+                               categorias=resultado["datos"],
+                               page=resultado.get("page", page),
+                               per_page=resultado.get("per_page", per_page),
+                               total=resultado.get("total", 0),
+                               total_pages=resultado.get("total_pages", 0),
+                               endpoint="categorias.categorias_list")
+
+    if resultado["status"] == 401:
+        return cerrar_sesion_por_401()
 
     flash(resultado["datos"].get("message", "Error al obtener categorías"), "error")
-    return render_template("categorias/list.html", categorias=[])
+    return render_template("categorias/list.html", categorias=[], page=1, per_page=per_page,
+                           total=0, total_pages=0, endpoint="categorias.categorias_list")
 
 
 @categorias_bp.route("/categorias/nueva", methods=["GET", "POST"])

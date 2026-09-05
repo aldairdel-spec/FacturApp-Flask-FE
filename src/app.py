@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from src.controladores import registrar_controladores
+from src.apis import login_backend
 from src.apis import cliente_api, producto_api, usuario_api, factura_api
 
 app = Flask(__name__)
@@ -11,18 +11,17 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin):
-    def __init__(self, username, password_hash):
-        self.id = username
-        self.username = username
-        self.password_hash = password_hash
-
-users = [
-    User("admin", generate_password_hash("admin123"))
-]
+    def __init__(self, user_info):
+        self.user_info = user_info
+        self.id = str(user_info.get("usuario") or user_info.get("id") or "")
+        self.username = user_info.get("usuario", "")
 
 @login_manager.user_loader
 def load_user(username):
-    return next((u for u in users if u.username == username), None)
+    user_info = session.get("user_info")
+    if user_info and str(user_info.get("usuario") or user_info.get("id") or "") == username:
+        return User(user_info)
+    return None
 
 clientes = []
 
@@ -31,20 +30,27 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
+        usuario = request.form.get("username", "").strip()
         password = request.form.get("password", "")
-        user = next((u for u in users if u.username == username), None)
-        if user and check_password_hash(user.password_hash, password):
-            login_user(user)
-            flash(f"Bienvenido, {username}", "success")
+        status, data = login_backend(usuario, password)
+        access_token = data.get("access_token") if isinstance(data, dict) else None
+        user_info = data.get("usuario") if isinstance(data, dict) else None
+        if status == 200 and access_token and user_info:
+            session["access_token"] = access_token
+            session["user_info"] = user_info
+            login_user(User(user_info))
+            flash(f"Bienvenido, {user_info.get('usuario')}", "success")
             next_page = request.args.get("next")
             return redirect(next_page or url_for("index"))
-        flash("Usuario o contraseña incorrectos", "error")
+        mensaje = data.get("message", "Usuario o contraseña incorrectos") if isinstance(data, dict) else "Usuario o contraseña incorrectos"
+        flash(mensaje, "error")
     return render_template("auth/login.html")
 
 @app.route("/logout")
 @login_required
 def logout():
+    session.pop("access_token", None)
+    session.pop("user_info", None)
     logout_user()
     flash("Sesión cerrada correctamente", "success")
     return redirect(url_for("login"))

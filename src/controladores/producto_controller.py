@@ -1,13 +1,16 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.apis.producto_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.producto_api import obtener_todos, obtener_paginado, obtener_por_id, crear, actualizar, eliminar
 from src.apis.categoria_api import obtener_todas
+from src.apis import cerrar_sesion_por_401
 
 productos_bp = Blueprint('productos', __name__)
 
 
 @productos_bp.route("/productos")
 def productos_list():
-    resultado = obtener_todos()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = obtener_paginado(page=page, per_page=per_page)
     res_categorias = obtener_todas()
 
     categorias = []
@@ -19,10 +22,20 @@ def productos_list():
     if resultado["status"] == 200:
         for p in resultado["datos"]:
             p["categoria_nombre"] = mapa_categorias.get(p["id_categoria"], "Sin categoría")
-        return render_template("productos/list.html", productos=resultado["datos"])
+        return render_template("productos/list.html",
+                               productos=resultado["datos"],
+                               page=resultado.get("page", page),
+                               per_page=resultado.get("per_page", per_page),
+                               total=resultado.get("total", 0),
+                               total_pages=resultado.get("total_pages", 0),
+                               endpoint="productos.productos_list")
+
+    if resultado["status"] == 401:
+        return cerrar_sesion_por_401()
 
     flash(resultado["datos"].get("message", "Error al obtener productos"), "error")
-    return render_template("productos/list.html", productos=[])
+    return render_template("productos/list.html", productos=[], page=1, per_page=per_page,
+                           total=0, total_pages=0, endpoint="productos.productos_list")
 
 
 @productos_bp.route("/productos/nuevo", methods=["GET", "POST"])

@@ -1,18 +1,31 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from src.apis.metodo_pago_api import obtener_todos, obtener_por_id, crear, actualizar, eliminar
+from src.apis.metodo_pago_api import obtener_todos, obtener_paginado, obtener_por_id, crear, actualizar, eliminar
+from src.apis import cerrar_sesion_por_401
 
 metodos_pago_bp = Blueprint('metodos_pago', __name__)
 
 
 @metodos_pago_bp.route('/metodos_pago')
 def metodos_pago_list():
-    resultado = obtener_todos()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    resultado = obtener_paginado(page=page, per_page=per_page)
 
     if resultado["status"] == 200:
-        return render_template("metodos_pago/list.html", metodos_pago=resultado["datos"])
+        return render_template("metodos_pago/list.html",
+                               metodos_pago=resultado["datos"],
+                               page=resultado.get("page", page),
+                               per_page=resultado.get("per_page", per_page),
+                               total=resultado.get("total", 0),
+                               total_pages=resultado.get("total_pages", 0),
+                               endpoint="metodos_pago.metodos_pago_list")
+
+    if resultado["status"] == 401:
+        return cerrar_sesion_por_401()
 
     flash(resultado["datos"].get("message", "Error al obtener metodos de pago"), "error")
-    return render_template("metodos_pago/list.html", metodos_pago=[])
+    return render_template("metodos_pago/list.html", metodos_pago=[], page=1, per_page=per_page,
+                           total=0, total_pages=0, endpoint="metodos_pago.metodos_pago_list")
 
 
 @metodos_pago_bp.route('/metodos_pago/nuevo', methods=['GET', 'POST'])

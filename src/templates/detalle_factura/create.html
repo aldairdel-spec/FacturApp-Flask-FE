@@ -2,47 +2,63 @@
 {% block contenido %}
 
 <div class="page-header">
-    <h2><i class="fas fa-plus-circle"></i> Nuevo Detalle de Factura</h2>
+    <h2><i class="fas fa-plus-circle"></i> Nuevo Detalle de Factura
+        <span class="page-sub">Asocie un producto a una factura</span>
+    </h2>
 </div>
 
-<div class="card-custom">
+<div class="card-custom card-custom-alt">
     <div class="card-body">
         <form method="POST" class="form-custom">
-            <div class="form-group">
-                <label><i class="fas fa-file-invoice-dollar"></i> Factura</label>
-                <select class="form-control" name="factura_id" required>
-                    <option value="">Seleccione una factura</option>
-                    {% for f in facturas %}
-                    <option value="{{ f.id }}">#{{ f.id }} - {{ f.numero_factura }}</option>
-                    {% endfor %}
-                </select>
-            </div>
 
-            <div class="form-group">
-                <label><i class="fas fa-box"></i> Producto</label>
-                <select class="form-control" name="producto_id" id="productoSelect" required>
-                    <option value="">Seleccione un producto</option>
-                    {% for p in productos %}
-                    <option value="{{ p.id }}" data-precio="{{ p.precio }}">{{ p.nombre }} — S/ {{ p.precio }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-list-alt"></i> Detalle de productos
+                </div>
 
-            <div class="form-group">
-                <label><i class="fas fa-sort-numeric-up"></i> Cantidad</label>
-                <input type="number" min="1" class="form-control" name="cantidad"
-                       id="cantidadInput" value="1" required>
-            </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label><i class="fas fa-file-invoice-dollar"></i> Factura</label>
+                        <select class="form-control" name="factura_id" required>
+                            <option value="">Seleccione una factura</option>
+                            {% for f in facturas %}
+                            <option value="{{ f.id }}">#{{ f.id }} - {{ f.numero_factura }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-            <div class="form-group">
-                <label><i class="fas fa-dollar-sign"></i> Precio Unitario</label>
-                <input type="number" step="0.01" min="0" class="form-control" name="precio_unitario"
-                       id="precioUnitarioInput" value="0.00" readonly>
-            </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-box"></i> Producto</label>
+                        <select class="form-control" name="producto_id" id="productoSelect" required>
+                            <option value="">Seleccione un producto</option>
+                            {% for p in productos %}
+                            <option value="{{ p.id }}" data-precio="{{ p.precio }}">{{ p.nombre }} — S/ {{ p.precio }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-            <div class="form-group">
-                <label><i class="fas fa-calculator"></i> Subtotal</label>
-                <input type="text" class="form-control" id="subtotalDisplay" value="S/ 0.00" readonly>
+                    <div class="form-group">
+                        <label><i class="fas fa-sort-numeric-up"></i> Cantidad</label>
+                        <input type="number" min="1" class="form-control" name="cantidad"
+                               id="cantidadInput" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-dollar-sign"></i> Precio Unitario</label>
+                        <input type="number" step="0.01" min="0" class="form-control" name="precio_unitario"
+                               id="precioUnitarioInput" value="0.00" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-calculator"></i> Subtotal</label>
+                        <input type="text" class="form-control" id="subtotalDisplay" value="S/ 0.00" readonly>
+                    </div>
+                </div>
+
+                <div class="form-hint">
+                    <i class="fas fa-info-circle"></i>
+                    El precio se toma del producto seleccionado y el subtotal se calcula automáticamente.
+                </div>
             </div>
 
             <div class="form-actions">

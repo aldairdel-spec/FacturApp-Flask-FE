@@ -2,10 +2,14 @@
 {% block contenido %}
 
 <div class="page-header">
-    <h2><i class="fas fa-file-invoice-dollar"></i> Facturas</h2>
-    <a href="{{ url_for('facturas.facturas_create') }}" class="btn btn-primary-custom btn-custom">
-        <i class="fas fa-plus-circle"></i> Nueva Factura
-    </a>
+    <h2><i class="fas fa-file-invoice-dollar"></i> Facturas
+        <span class="page-sub">Genere y descargue el PDF de cada factura desde la columna de acciones</span>
+    </h2>
+    <div class="page-actions">
+        <a href="{{ url_for('facturas.facturas_create') }}" class="btn btn-primary-custom btn-custom">
+            <i class="fas fa-plus-circle"></i> Nueva Factura
+        </a>
+    </div>
 </div>
 
 <div class="card-custom">
@@ -36,6 +40,11 @@
                         <td><span class="badge-total">S/ {{ "%.2f"|format(f.total) }}</span></td>
                         <td class="text-center">
                             <div class="action-btns justify-content-center">
+                                <a href="{{ url_for('pdf.facturas_pdf', id=f.id) }}"
+                                   class="btn btn-pdf-custom btn-custom btn-custom-sm"
+                                   title="Generar y descargar el PDF de esta factura">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </a>
                                 <a href="{{ url_for('facturas.facturas_edit', id=f.id) }}"
                                    class="btn btn-warning-custom btn-custom btn-custom-sm">
                                     <i class="fas fa-edit"></i> Editar
